@@ -52,7 +52,7 @@ export default function Sidebar() {
             </Link>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
-            Playground
+            Projects
           </TooltipContent>
         </Tooltip>
         <Tooltip>
