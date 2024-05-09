@@ -18,6 +18,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Link from "next/link";
 
 export default function MyAccountMenu({ user }: { user: User | undefined }) {
   return (
@@ -43,10 +44,12 @@ export default function MyAccountMenu({ user }: { user: User | undefined }) {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/settings" className="cursor-pointer">Settings</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })} className="cursor-pointer">
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -57,7 +60,7 @@ export default function MyAccountMenu({ user }: { user: User | undefined }) {
             <Button
               variant="outline"
               size="icon"
-              className="overflow-hidden rounded-full"
+              className="overflow-hidden rounded-full cursor-pointer"
               onClick={() => signIn("google", { callbackUrl: "/" })}
             >
               <Lock />
