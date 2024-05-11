@@ -78,7 +78,7 @@ export default function Sidebar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={`rounded-lg hover:bg-muted data-[state=active]:bg-black`}
+                  className={`rounded-lg data-[state=active]:bg-black`}
                   aria-label={data.name}
                 >
                   {data.icon}
