@@ -90,3 +90,15 @@ model VerificationToken {
 
 //   @@id([userId, credentialID])
 // }
+model Project {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  technology  Technology[]
+}
+
+model Technology {
+  id      String  @id @default(uuid())
+  name    String
+  project Project[]
+}

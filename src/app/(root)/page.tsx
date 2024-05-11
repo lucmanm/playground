@@ -1,32 +1,11 @@
+"use server"
 import CardProjects from "@/components/CardProjects";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Bird,
-  CornerDownLeft,
-  Mic,
-  Paperclip,
-  Rabbit,
-  Turtle,
-} from "lucide-react";
+import { prisma } from "@/lib/prisma";
+
 import React from "react";
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const projects = await prisma.project.findMany()
   return (
     <section className="w-full py-12 md:py-24 ">
       <div className="container grid gap-8 px-4 md:px-6">
@@ -39,8 +18,13 @@ const Dashboard = () => {
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8"></div>
       <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
         {
-          Array.from({length: 10}).map((_, index)=><CardProjects key={index}/>)
+          projects.length > 0 && projects.map((data, index) => (
+            <CardProjects key={index} item={data}/>
+          ))
         }
+        {/* {
+          Array.from({length: 10}).map((_, index)=><CardProjects key={index}/>)
+        } */}
       </main>
     </div>
     </section>
