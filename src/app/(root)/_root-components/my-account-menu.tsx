@@ -19,8 +19,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function MyAccountMenu({ user }: { user: User | undefined }) {
+  const router = useRouter()
   return (
     <>
       {user ? (
@@ -45,11 +47,16 @@ export default function MyAccountMenu({ user }: { user: User | undefined }) {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/settings" className="cursor-pointer">Settings</Link>
+              <Link href="/settings" className="cursor-pointer">
+                Settings
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })} className="cursor-pointer">
+            <DropdownMenuItem
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="cursor-pointer"
+            >
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -61,7 +68,7 @@ export default function MyAccountMenu({ user }: { user: User | undefined }) {
               variant="outline"
               size="icon"
               className="overflow-hidden rounded-full cursor-pointer"
-              onClick={() => signIn("google", { callbackUrl: "/" })}
+              onClick={() => router.push("/login")}
             >
               <Lock />
             </Button>

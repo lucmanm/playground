@@ -9,18 +9,13 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { auth } from "@/lib/auth";
+import getSession from "@/lib/getSession";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import React from "react";
 
 const Settings = async () => {
-  const session = await auth();
-  const user = session?.user;
-// CONTINUE
-  if(user) {
-    redirect("/")
-  }
+  
+  const user = await getSession();
 
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
@@ -45,13 +40,11 @@ const Settings = async () => {
           <Card x-chunk="dashboard-04-chunk-1">
             <CardHeader>
               <CardTitle>Account Profile</CardTitle>
-              <CardDescription>
-                Your Account information
-              </CardDescription>
+              <CardDescription>Your Account information</CardDescription>
             </CardHeader>
             <CardContent>
               <form>
-                <Input placeholder="Name" value={`${user?.name}`}/>
+                <Input placeholder="Name" value={`${user?.name}`} />
               </form>
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
@@ -90,7 +83,7 @@ const Settings = async () => {
         </div>
       </div>
     </main>
-  ) 
+  );
 };
 
 export default Settings;

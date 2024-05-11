@@ -27,14 +27,17 @@ export default function Sidebar() {
           size="icon"
           aria-label="Home"
           className="bg-zinc-500"
+          asChild
         >
-          <Image
-            src="/MyLogo.png"
-            width={28}
-            height={28}
-            alt="Avatar"
-            className="overflow-hidden rounded-full"
-          />
+          <Link href="/">
+            <Image
+              src="/MyLogo.png"
+              width={28}
+              height={28}
+              alt="Avatar"
+              className="overflow-hidden rounded-full"
+            />
+          </Link>
         </Button>
       </div>
       <nav className="grid gap-1 p-2">
