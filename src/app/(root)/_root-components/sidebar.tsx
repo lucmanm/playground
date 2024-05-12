@@ -22,7 +22,7 @@ import { usePathname } from "next/navigation";
 const menuData = [
   {
     name: "Projects",
-    url: "/project",
+    url: "/",
     icon: <SquareTerminal className="size-5" />,
   },
   {
