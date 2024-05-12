@@ -10,6 +10,7 @@ import {
   Book,
   Bot,
   Code2,
+  Contact2,
   LifeBuoy,
   Settings2,
   SquareTerminal,
@@ -26,7 +27,7 @@ const menuData = [
     icon: <SquareTerminal className="size-5" />,
   },
   {
-    name: "Models",
+    name: "Excercise",
     url: "/model",
     icon: <Bot className="size-5" />,
   },
@@ -94,17 +95,19 @@ export default function Sidebar() {
       <nav className="mt-auto grid gap-1 p-2">
         <Tooltip>
           <TooltipTrigger asChild>
+          <Link href="/contact-me">
             <Button
               variant="ghost"
               size="icon"
               className="mt-auto rounded-lg"
               aria-label="Help"
             >
-              <LifeBuoy className="size-5" />
+              <Contact2 className="size-5" />
             </Button>
+            </Link>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
-            Help
+            Contact Me
           </TooltipContent>
         </Tooltip>
         <Tooltip>
