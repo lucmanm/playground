@@ -18,8 +18,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ConteactMeForm() {
   return (
-    
-    <Card className="container lg:my-32">
+    <Card className="container lg:my-32 border-none">
       <CardHeader>
         <CardTitle>Contact Us</CardTitle>
         <CardDescription>

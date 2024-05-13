@@ -1,5 +1,7 @@
 import { ImageIcon } from "lucide-react";
+import Link from "next/link";
 type TItemProps = {
+  id: string | undefined
   name: string | undefined;
   description: string | undefined;
 } & {
@@ -11,6 +13,7 @@ type TItemProps = {
 
 export default function CardProjects({ item }: { item: TItemProps }) {
   return (
+    <Link href={`/${item.id}`}>
     <div className="group rounded-lg overflow-hidden border shadow-sm">
       <ImageIcon className="w-full h-60 object-cover group-hover:opacity-80 transition-opacity" />
       {/* <Image
@@ -34,12 +37,13 @@ export default function CardProjects({ item }: { item: TItemProps }) {
             <span
               key={index}
               className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-xs font-medium text-gray-500 dark:text-gray-400"
-            >
+              >
               {data.name}
             </span>
           ))}
         </div>
       </div>
     </div>
+          </Link>
   );
 }
