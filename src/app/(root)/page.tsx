@@ -3,14 +3,17 @@ import CardProjects from "@/components/CardProjects";
 import { prisma } from "@/lib/prisma";
 
 import CustomButton from "@/app/(root)/_root-components/CustomButton";
+import getServerSession from "@/lib/getSession";
 
 const Dashboard = async () => {
+  const {} = getServerSession();
+  
   const projects = await prisma.project.findMany({
     include: {
       technology: true,
-    }
+    },
   });
-  
+
   return (
     <section className="w-full py-12 md:py-24 ">
       <div className="container grid gap-8 px-4 md:px-6">
@@ -24,13 +27,11 @@ const Dashboard = async () => {
             </p>
           </div>
           <div>
-            <CustomButton>
-              Add Product
-            </CustomButton>
-            
+            {/* Continue  */}
+            <CustomButton>Add Product</CustomButton>
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8"/>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8" />
         <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
           {projects.length > 0 &&
             projects.map((data, index) => (

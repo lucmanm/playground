@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -28,27 +27,26 @@ const menuData = [
   },
   {
     name: "Excercise",
-    url: "/model",
-    icon: <Bot className="size-5" />,
-  },
-  {
-    name: "Api",
-    url: "/api",
+    url: "/excercise",
     icon: <Code2 className="size-5" />,
   },
   {
+    name: "Excercise",
+    url: "/",
+    icon: <Bot className="size-5" />,
+  },
+  {
     name: "Documentation",
-    url: "/documentation",
+    url: "/",
     icon: <Book className="size-5" />,
   },
   {
     name: "Settings",
-    url: "/settings",
+    url: "/",
     icon: <Settings2 className="size-5" />,
   },
 ];
 export default function Sidebar() {
-  const pathname = usePathname();
   return (
     <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
       <div className="border-b p-2">

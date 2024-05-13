@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "./auth";
 
-export default async function getSession() {
+export default async function getServerSession() {
     const session = await auth()
     const user = session?.user;
     if (user) { return user }
