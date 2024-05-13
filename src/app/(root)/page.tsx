@@ -3,10 +3,8 @@ import CardProjects from "@/components/CardProjects";
 import { prisma } from "@/lib/prisma";
 
 import CustomButton from "@/app/(root)/_root-components/CustomButton";
-import getServerSession from "@/lib/getSession";
 
 const Dashboard = async () => {
-  const {} = getServerSession();
   
   const projects = await prisma.project.findMany({
     include: {

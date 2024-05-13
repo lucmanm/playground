@@ -15,9 +15,12 @@ const AddEditProduct = async ({ params }:TProductProps) => {
       technology: true
     }
   })
+  
+
+  const technologyData = await prisma.technology.findMany()
   return (
     <div>
-      <AddEditProjectForm data={project}/>
+      <AddEditProjectForm data={project} technology={technologyData}/>
     </div>
   )
 }

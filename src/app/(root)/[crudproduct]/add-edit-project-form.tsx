@@ -26,6 +26,8 @@ import {
 import { updateProject } from "./action";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Technology } from "@prisma/client";
+import { createProject } from "./actionget";
 const items = [
   {
     id: "recents",
@@ -55,28 +57,33 @@ const items = [
 
 // zodSchema
 export const projectSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string().min(1, "Please enter title of your project"),
   description: z.string().min(1, "Please enter description of your project"),
-  technology: z
-    .object({
-      id: z.string(),
-      name: z.string(),
-    })
-    .array(),
+  // technology: z
+  // .object({
+  // id: z.string(),
+  // name: z.string(),
+  // })
+  // .array(),
 });
 
+// const technologySchema = projectSchema.pick({technology: true})
 // Combine the Project schema with null
 
 type TProductProps = {
   data: z.infer<typeof projectSchema> | null;
+  technology: Technology[];
 };
 
-export default function AddEditProjectForm({ data }: TProductProps) {
+export default function AddEditProjectForm({
+  data,
+  technology,
+}: TProductProps) {
   const router = useRouter();
   const { toast } = useToast();
 
-  const title = data ? "Save" : "Create Project";
+  const title = data ? "Save Changes" : "Create Project";
 
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
@@ -85,22 +92,32 @@ export default function AddEditProjectForm({ data }: TProductProps) {
       : {
           name: "",
           description: "",
-          technology: [],
+          
         },
   });
 
-  async function onSubmit(values: z.infer<typeof projectSchema>) {
+  const onSubmit = async (values: z.infer<typeof projectSchema>) => {
     try {
-      await updateProject(values);
-      toast({
-        description: `Succesfully Updated.`,
-        variant: "success",
-      });
+      if (data) {
+        console.log("UPDATE");
+        await updateProject(values);
+        toast({
+          description: `Succesfully Updated.`,
+          variant: "success",
+        });
+      } else {
+        console.log("CREATE");
+        await createProject(values);
+        toast({
+          description: `Succesfully Created.`,
+          variant: "success",
+        });
+      }
       router.push("/");
     } catch (error) {
-      console.log("ERROR_SUBMIT_FORM");
+      console.log("ERROR_SUBMIT_FORM", error);
     }
-  }
+  };
 
   return (
     <Card className="container lg:my-32 border-none">
@@ -162,61 +179,54 @@ export default function AddEditProjectForm({ data }: TProductProps) {
 
             {/* check for selection of tech stacks */}
 
-            {/* {data !== null && (
-              <FormField
-                control={form.control}
-                name="technology"
-                render={() => (
-                  <FormItem>
-                    <div className="mb-4">
-                      <FormLabel className="text-base">Select Tech</FormLabel>
-                      <FormDescription>
-                        Select the items you want to display in the sidebar.
-                      </FormDescription>
-                    </div>
-                    {data.technology.map((item) => (
-                      <FormField
-                        key={item.id}
-                        control={form.control}
-                        name="technology"
-                        render={({ field }) => {
-                          return (
-                            <FormItem
-                              key={item.id}
-                              className="flex flex-row items-start space-x-3 space-y-0 capitalize"
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(item.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([
-                                          ...field.value,
-                                          item.id,
-                                        ])
-                                      : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value !== item.id
-                                          )
-                                        );
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {item.name}
-                              </FormLabel>
-                            </FormItem>
-                          );
-                        }}
-                      />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )} */}
+            {/* {
+                                    <FormField control={form.control} name="technology" render={()=> (
+                                        <FormItem>
+                                            <div className="mb-4">
+                                                <FormLabel className="text-base">Select Tech</FormLabel>
+                                                <FormDescription>
+                                                    Select the items you want to display in the sidebar.
+                                                </FormDescription>
+                                            </div>
+                                            {technology.map((item) => (
+                                            <FormField key={item.id} control={form.control} name="technology" render={({
+                                                field })=> {
+                                                return (
+                                                <FormItem key={item.id}
+                                                    className="flex flex-row items-start space-x-3 space-y-0 capitalize">
+                                                    <FormControl>
+                                                        <Checkbox checked={field.value?.includes(item.id)}
+                                                            onCheckedChange={(checked)=> {
+                                                            return checked
+                                                            ? field.onChange([
+                                                            ...field.value,
+                                                            item.id,
+                                                            ])
+                                                            : field.onChange(
+                                                            field.value?.filter(
+                                                            (value) => value !== item.id
+                                                            )
+                                                            );
+                                                            }}
+                                                            />
+                                                    </FormControl>
+                                                    <FormLabel className="font-normal">
+                                                        {item.name}
+                                                    </FormLabel>
+                                                </FormItem>
+                                                );
+                                                }}
+                                                />
+                                                ))}
+                                                <FormMessage />
+                                        </FormItem>
+                                        )}
+                                        />
+                                        } */}
 
-            <Button type="submit">{title}</Button>
+            <Button type="submit" disabled={form.formState.isLoading}>
+              {title}
+            </Button>
           </form>
         </Form>
       </CardContent>
