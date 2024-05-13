@@ -23,24 +23,60 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Project } from "@prisma/client";
+import { updateProject } from "./action";
+import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
+const items = [
+  {
+    id: "recents",
+    label: "Recents",
+  },
+  {
+    id: "home",
+    label: "Home",
+  },
+  {
+    id: "applications",
+    label: "Applications",
+  },
+  {
+    id: "desktop",
+    label: "Desktop",
+  },
+  {
+    id: "downloads",
+    label: "Downloads",
+  },
+  {
+    id: "documents",
+    label: "Documents",
+  },
+] as const;
 
 // zodSchema
-const projectSchema = z.object({
-  name: z.string().min(1, { message: "Please enter title of your project" }),
-  description: z
-    .string()
-    .min(1, { message: "Please enter description of your project" }),
+export const projectSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, "Please enter title of your project"),
+  description: z.string().min(1, "Please enter description of your project"),
+  technology: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+    })
+    .array(),
 });
 
+// Combine the Project schema with null
+
 type TProductProps = {
-  data: Project | "";
+  data: z.infer<typeof projectSchema> | null;
 };
 
 export default function AddEditProjectForm({ data }: TProductProps) {
+  const router = useRouter();
   const { toast } = useToast();
 
-  const title = data ? "Edit Project" : "Create Project";
+  const title = data ? "Save" : "Create Project";
 
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
@@ -49,18 +85,21 @@ export default function AddEditProjectForm({ data }: TProductProps) {
       : {
           name: "",
           description: "",
+          technology: [],
         },
   });
 
-  function onSubmit(data: z.infer<typeof projectSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(values: z.infer<typeof projectSchema>) {
+    try {
+      await updateProject(values);
+      toast({
+        description: `Succesfully Updated.`,
+        variant: "success",
+      });
+      router.push("/");
+    } catch (error) {
+      console.log("ERROR_SUBMIT_FORM");
+    }
   }
 
   return (
@@ -77,6 +116,7 @@ export default function AddEditProjectForm({ data }: TProductProps) {
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-2/3 space-y-6"
           >
+            {/* Text Input for title */}
             <FormField
               control={form.control}
               name="name"
@@ -89,14 +129,15 @@ export default function AddEditProjectForm({ data }: TProductProps) {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-red-800">
-                    {form.formState.errors.title && ""}
+                  <FormDescription className="text-red-800 ">
+                    {form.formState.errors.name && ""}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* Text Area for description */}
+
+            {/* TextArea for description */}
 
             <FormField
               control={form.control}
@@ -118,6 +159,63 @@ export default function AddEditProjectForm({ data }: TProductProps) {
                 </FormItem>
               )}
             />
+
+            {/* check for selection of tech stacks */}
+
+            {/* {data !== null && (
+              <FormField
+                control={form.control}
+                name="technology"
+                render={() => (
+                  <FormItem>
+                    <div className="mb-4">
+                      <FormLabel className="text-base">Select Tech</FormLabel>
+                      <FormDescription>
+                        Select the items you want to display in the sidebar.
+                      </FormDescription>
+                    </div>
+                    {data.technology.map((item) => (
+                      <FormField
+                        key={item.id}
+                        control={form.control}
+                        name="technology"
+                        render={({ field }) => {
+                          return (
+                            <FormItem
+                              key={item.id}
+                              className="flex flex-row items-start space-x-3 space-y-0 capitalize"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(item.id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([
+                                          ...field.value,
+                                          item.id,
+                                        ])
+                                      : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== item.id
+                                          )
+                                        );
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                {item.name}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        }}
+                      />
+                    ))}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )} */}
+
             <Button type="submit">{title}</Button>
           </form>
         </Form>

@@ -10,6 +10,9 @@ const AddEditProduct = async ({ params }:TProductProps) => {
   const project = await prisma.project.findFirst({
     where: {
       id: params.crudproduct
+    },
+    include:{
+      technology: true
     }
   })
   return (
