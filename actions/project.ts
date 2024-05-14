@@ -1,16 +1,19 @@
-
+"use server"
 
 import { prisma } from "@/lib/prisma";
-import { create } from "domain";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 
-export const projectSchema = z.object({
-    name: z.string().min(1),
-    description: z.string().min(1)
-})
-export async function createProject(excelData: z.infer<typeof projectSchema>[]) {
+// export const projectSchema = z.object({
+//     name: z.string().min(1),
+//     description: z.string().min(1)
+// })
+type TProjectProps = {
+    name: string,
+    description: string
+}
+export async function createProject(excelData: TProjectProps[]) {
     try {
         await prisma.project.createMany({
             data: excelData.map(item => ({
