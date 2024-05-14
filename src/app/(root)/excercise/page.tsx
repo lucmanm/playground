@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import CardExcercise from "./_components/CardExcercise";
+import Container from "./[excercisetitle]/_components/Container";
 export const exerciseParams = [
   {
     title: "checkbox",
@@ -38,7 +39,7 @@ export const exerciseParams = [
 
 const Excercise = () => {
   return (
-    <section className="container grid lg:grid-cols-4 lg:gap-4 my-4">
+    <section className="container grid lg:grid-cols-4 lg:gap-4 my-4" >
       {exerciseParams.map((data, index) => (
         <CardExcercise key={index} item={data} />
       ))}
