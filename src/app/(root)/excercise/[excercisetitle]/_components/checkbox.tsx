@@ -88,9 +88,9 @@ const CheckBox = () => {
           render={() => (
             <FormItem>
               <div className="mb-4">
-                <FormLabel className="text-base">Sidebar</FormLabel>
+                <FormLabel className="text-base">Check Box</FormLabel>
                 <FormDescription>
-                  Select the items you want to display in the sidebar.
+                  Select the items you want to display.
                 </FormDescription>
               </div>
               {items.map((item) => (
