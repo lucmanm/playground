@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }) {
   return (
     <TooltipProvider>
-      <div className="grid h-screen w-full pl-[56px]">
+      <div className="grid h-screen w-full pl-[56px] ">
         <Sidebar />
         <div className="flex flex-col">
           <Header />

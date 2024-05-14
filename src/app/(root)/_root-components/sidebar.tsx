@@ -48,8 +48,8 @@ const menuData = [
 ];
 export default function Sidebar() {
   return (
-    <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
-      <div className="border-b p-2">
+    <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col  bg-slate-900/25">
+      <div className=" p-2">
         <Button
           variant="outline"
           size="icon"

@@ -15,7 +15,7 @@ const Excercises: React.FC<TexcercisesProps> = ({ params }) => {
     notFound();
   }
   return (
-    <section className="container flex items-center justify-center h-full">
+    <section className="container flex  justify-center h-full pt-20">
       {checkTitle.title === "checkbox" && <CheckBox />}
       {checkTitle.title === "uploadfile" && <UploadExcelFile />}
     </section>
