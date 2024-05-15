@@ -29,7 +29,7 @@ export default function CardProjects({ item }: { item: TItemProps }) {
       <div className="group rounded-lg overflow-hidden border shadow-sm relative">
         <ImageIcon className="w-full h-60 object-cover group-hover:opacity-80 transition-opacity" />
         <X
-          className="border top-4 right-4 absolute rounded-full size-7 hover:bg-red-500 bg-slate-100 "
+          className="border top-4 right-4 absolute rounded-full size-7 hover:text-red-500 hover:border-red-500 bg-slate-100 "
           onClick={onDelete}
         />
         {/* <Image
