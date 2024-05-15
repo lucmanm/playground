@@ -10,18 +10,22 @@ export const exerciseParams = [
   },
   {
     sPath: "upload-file",
-    title: "Check box Filter",
-    description: "testing for checkbox with prisma",
-  }
+    title: "Upload Excel file",
+    description: "Test for importing excel file reads only .xls & .xlsx",
+  },
 ];
 
 const Excercise = () => {
   return (
-    <section className="container grid lg:grid-cols-4 lg:gap-4 my-4" >
+    <Container
+      className="container grid lg:grid-cols-4 lg:gap-4 my-4"
+      title="Explore my Excercises"
+      description="This all listed is my playground for testing a code to expore more knowledge"
+    >
       {exerciseParams.map((data, index) => (
         <CardExcercise key={index} item={data} />
       ))}
-    </section>
+    </Container>
   );
 };
 

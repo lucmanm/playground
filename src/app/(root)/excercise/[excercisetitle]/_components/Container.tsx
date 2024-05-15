@@ -4,17 +4,17 @@ type TContainerProps = {
   children: React.ReactNode;
   title?: string;
   description?: string;
-  classsName?: string;
+  className?: string;
 };
 
 const Container: React.FC<TContainerProps> = ({
   children,
   description,
   title,
-  classsName,
+  className,
 }) => {
   return (
-    <section className={cn("container pt-20", classsName)}>
+    <section className={cn("container pt-20", className)}>
       <div className="text-left capitalize">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
           {title}

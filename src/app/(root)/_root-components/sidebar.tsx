@@ -5,19 +5,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  Bird,
   Book,
-  Bot,
   Code2,
-  Contact2,
   Contact2Icon,
-  ContactRound,
-  ContactRoundIcon,
-  LifeBuoy,
-  Settings2,
   SquareTerminal,
-  SquareUser,
-  Triangle,
   User2,
 } from "lucide-react";
 import Image from "next/image";
@@ -35,19 +26,9 @@ const menuData = [
     icon: <Code2 className="size-5" />,
   },
   {
-    name: "Excercise",
-    url: "/",
-    icon: <Bot className="size-5" />,
-  },
-  {
     name: "About Me",
     url: "/about-me",
     icon: <Book className="size-5" />,
-  },
-  {
-    name: "Settings",
-    url: "/",
-    icon: <Settings2 className="size-5" />,
   },
 ];
 export default function Sidebar() {
