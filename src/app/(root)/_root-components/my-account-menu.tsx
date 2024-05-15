@@ -22,7 +22,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function MyAccountMenu({ user }: { user: User | undefined }) {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <>
       {user ? (
@@ -70,11 +70,11 @@ export default function MyAccountMenu({ user }: { user: User | undefined }) {
               className="overflow-hidden rounded-full cursor-pointer"
               onClick={() => router.push("/login")}
             >
-              <Lock />
+              <Lock className="text-slate-950"/>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom" sideOffset={5}>
-            Sign In
+            Login
           </TooltipContent>
         </Tooltip>
       )}

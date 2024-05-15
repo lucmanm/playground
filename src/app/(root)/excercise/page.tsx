@@ -4,11 +4,13 @@ import CardExcercise from "./_components/CardExcercise";
 import Container from "./[excercisetitle]/_components/Container";
 export const exerciseParams = [
   {
-    title: "checkbox",
+    sPath: "checkbox",
+    title: "Check box Filter",
     description: "testing for checkbox with prisma",
   },
   {
-    title: "uploadfile",
+    sPath: "upload-file",
+    title: "Check box Filter",
     description: "testing for checkbox with prisma",
   }
 ];

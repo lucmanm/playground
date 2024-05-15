@@ -6,6 +6,7 @@ type TProductProps ={
     crudproduct: string
   }
 }
+
 const AddEditProduct = async ({ params }:TProductProps) => {
   const project = await prisma.project.findFirst({
     where: {

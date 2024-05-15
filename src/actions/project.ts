@@ -1,8 +1,8 @@
 "use server"
 
+import { projectSchema } from "@/app/(root)/[crudproduct]/add-edit-project-form";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
 
@@ -14,7 +14,47 @@ type TProjectProps = {
     name: string,
     description: string
 }
+// Create Single Project Query
+export async function createProject(data: z.infer<typeof projectSchema>) {
+    try {
+        
+        const { name, description } = data
+        await prisma.project.create({
 
+            data: {
+                name,
+                description
+            }
+        })
+
+        revalidatePath("/")
+    } catch (error) {
+        console.log("ERROR_CREATE_PROJECT", error);
+    }
+}
+
+
+// Update Project Query
+export async function updateProject(data: z.infer<typeof projectSchema>) {
+    try {
+        const { name, description } = data
+        await prisma.project.update({
+            where: {
+                id: data.id
+            },
+            data: {
+                name,
+                description
+            }
+        })
+        revalidatePath("/")
+    } catch (error) {
+        console.log("ERROR_UPDATE_PROJECT", error);
+    }
+}
+
+
+// Create Nuld Project Query
 export async function createBulkProject(excelData: TProjectProps[]) {
     try {
         await prisma.project.createMany({
@@ -26,7 +66,6 @@ export async function createBulkProject(excelData: TProjectProps[]) {
         revalidatePath("/")
     } catch (error) {
         console.log("ERROR_CREATE_RPOJECT", error);
-
     }
 }
 

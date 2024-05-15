@@ -9,16 +9,19 @@ type TexcercisesProps = {
 };
 
 const Excercises: React.FC<TexcercisesProps> = ({ params }) => {
+  const path = decodeURI(params.excercisetitle)
+  console.log(path);
+  
   const checkTitle = exerciseParams.find(
-    (data) => data.title === params.excercisetitle
+    (data) => data.sPath === path
   );
   if (!checkTitle) {
     notFound();
   }
   return (
     <Container title={checkTitle.title} description={checkTitle.description}>
-      {checkTitle.title === "checkbox" && <CheckBox />}
-      {checkTitle.title === "uploadfile" && <UploadExcelFile />}
+      {checkTitle.sPath === "checkbox" && <CheckBox />}
+      {checkTitle.sPath === "upload-file" && <UploadExcelFile />}
     </Container>
   );
 };

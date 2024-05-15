@@ -21,8 +21,7 @@ export default function CardProjects({ item }: { item: TItemProps }) {
     event.preventDefault();
     await deleteProject(item.id);
     toast({
-      title: "successfully deleted",
-      description: "you deleted a project",
+      description: "Successfully Deleted.",
       variant: "destructive",
     });
   };

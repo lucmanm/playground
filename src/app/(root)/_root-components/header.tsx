@@ -156,7 +156,7 @@ export default async function Header() {
           </form>
         </DrawerContent>
       </Drawer>
-      <Button variant="outline" size="sm" className="ml-auto gap-1.5 text-sm">
+      <Button variant="outline" size="sm" className="ml-auto gap-1.5 text-sm text-slate-950">
         <Share className="size-3.5" />
         Share
       </Button>

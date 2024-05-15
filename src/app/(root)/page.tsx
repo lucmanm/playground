@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import CustomButton from "@/app/(root)/_root-components/CustomButton";
 
 const Dashboard = async () => {
-  
   const projects = await prisma.project.findMany({
     include: {
       technology: true,
@@ -18,14 +17,13 @@ const Dashboard = async () => {
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
           <div className="grid gap-1 w-full">
             <h1 className="text-2xl font-bold tracking-tight">
-              Explore My Project Categories
+              Explore My Project 
             </h1>
             <p className="text-gray-500 dark:text-gray-400">
-              Find the perfect project category for your needs.
+              Checkout my previous and current projects.
             </p>
           </div>
           <div>
-            {/* Continue  */}
             <CustomButton>Add Product</CustomButton>
           </div>
         </div>

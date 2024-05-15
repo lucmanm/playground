@@ -23,11 +23,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { updateProject } from "./action";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Technology } from "@prisma/client";
-import { createProject } from "./actionget";
+import { createProject, updateProject } from "@/actions/project";
 const items = [
   {
     id: "recents",

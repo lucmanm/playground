@@ -10,11 +10,15 @@ import {
   Bot,
   Code2,
   Contact2,
+  Contact2Icon,
+  ContactRound,
+  ContactRoundIcon,
   LifeBuoy,
   Settings2,
   SquareTerminal,
   SquareUser,
   Triangle,
+  User2,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,8 +40,8 @@ const menuData = [
     icon: <Bot className="size-5" />,
   },
   {
-    name: "Documentation",
-    url: "/",
+    name: "About Me",
+    url: "/about-me",
     icon: <Book className="size-5" />,
   },
   {
@@ -100,7 +104,7 @@ export default function Sidebar() {
                 className="mt-auto rounded-lg"
                 aria-label="Help"
               >
-                <Contact2 className="size-5" />
+                <Contact2Icon className="size-5" />
               </Button>
             </Link>
           </TooltipTrigger>
@@ -117,7 +121,7 @@ export default function Sidebar() {
                 className="mt-auto rounded-lg"
                 aria-label="Account"
               >
-                <SquareUser className="size-5" />
+                <User2 className="size-5" />
               </Button>
             </Link>
           </TooltipTrigger>
