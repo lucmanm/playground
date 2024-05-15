@@ -13,6 +13,7 @@ type TProjectProps = {
     name: string,
     description: string
 }
+
 export async function createProject(excelData: TProjectProps[]) {
     try {
         await prisma.project.createMany({
