@@ -48,7 +48,7 @@ const menuData = [
 ];
 export default function Sidebar() {
   return (
-    <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col  bg-slate-900/25">
+    <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col  bg-slate-950 text-slate-100">
       <div className=" p-2">
         <Button
           variant="outline"
@@ -72,7 +72,7 @@ export default function Sidebar() {
       <nav className="grid gap-1 p-2">
         {menuData.map((data, index) => (
           <Tooltip key={index}>
-            <TooltipTrigger asChild >
+            <TooltipTrigger asChild>
               <Link href={`${data.url}`}>
                 <Button
                   variant="ghost"
@@ -93,15 +93,15 @@ export default function Sidebar() {
       <nav className="mt-auto grid gap-1 p-2">
         <Tooltip>
           <TooltipTrigger asChild>
-          <Link href="/contact-me">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="mt-auto rounded-lg"
-              aria-label="Help"
-            >
-              <Contact2 className="size-5" />
-            </Button>
+            <Link href="/contact-me">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="mt-auto rounded-lg"
+                aria-label="Help"
+              >
+                <Contact2 className="size-5" />
+              </Button>
             </Link>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>

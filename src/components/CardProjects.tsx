@@ -15,21 +15,23 @@ type TItemProps = {
 };
 
 export default function CardProjects({ item }: { item: TItemProps }) {
-  const onDelete: MouseEventHandler<SVGSVGElement> | undefined = async (event) => {
+  const onDelete: MouseEventHandler<SVGSVGElement> | undefined = async (
+    event
+  ) => {
     event.preventDefault();
-    await deleteProject(item.id)
+    await deleteProject(item.id);
     toast({
       title: "successfully deleted",
       description: "you deleted a project",
-      variant: "destructive"
+      variant: "destructive",
     });
   };
   return (
     <Link href={`/${item.id}`}>
-      <div className="group rounded-lg overflow-hidden border shadow-sm relative">
+      <div className="group/card h-full rounded-lg overflow-hidden border shadow-sm relative">
         <ImageIcon className="w-full h-60 object-cover group-hover:opacity-80 transition-opacity" />
         <X
-          className="border top-4 right-4 absolute rounded-full size-7 hover:text-red-500 hover:border-red-500 bg-slate-100 "
+          className="border top-4 right-4 absolute rounded-full size-7 hover:text-red-500 hover:border-red-500 bg-slate-100 invisible group-hover/card:visible"
           onClick={onDelete}
         />
         {/* <Image

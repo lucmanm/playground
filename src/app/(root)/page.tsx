@@ -30,7 +30,7 @@ const Dashboard = async () => {
           </div>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8" />
-        <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
+        <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-4">
           {projects.length > 0 &&
             projects.map((data, index) => (
               <CardProjects key={index} item={data} />
