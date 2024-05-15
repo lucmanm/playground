@@ -1,4 +1,5 @@
 "use client";
+import { createBulkProject } from "@/actions/project";
 import { projectSchema } from "@/app/(root)/[crudproduct]/add-edit-project-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,10 +12,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import * as XLSX from "xlsx";
 import { z } from "zod";
-import { createProject } from "../../../../../../actions/project";
 
 const UploadExcelFile = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -59,7 +60,7 @@ const UploadExcelFile = () => {
           XLSX.utils.sheet_to_json(workSheet);
           try {
             //Save to the DB
-            await createProject(json);
+            await createBulkProject(json);
           } catch (error) {
             console.log(error);
           }

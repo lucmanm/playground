@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 
@@ -14,7 +15,7 @@ type TProjectProps = {
     description: string
 }
 
-export async function createProject(excelData: TProjectProps[]) {
+export async function createBulkProject(excelData: TProjectProps[]) {
     try {
         await prisma.project.createMany({
             data: excelData.map(item => ({
@@ -22,7 +23,6 @@ export async function createProject(excelData: TProjectProps[]) {
                 description: item.description
             }))
         })
-        console.log("Creating project");
         revalidatePath("/")
     } catch (error) {
         console.log("ERROR_CREATE_RPOJECT", error);
@@ -41,3 +41,17 @@ export async function createProject(excelData: TProjectProps[]) {
 
 //     }
 // }
+
+export async function deleteProject(paramId: string | undefined) {
+    try {
+        await prisma.project.delete({
+            where:{
+                id: paramId
+            }
+        })
+        revalidatePath("/")
+    } catch (error) {
+        console.log("ERROR_DELETE_PROJECT", error);
+        
+    }
+}
