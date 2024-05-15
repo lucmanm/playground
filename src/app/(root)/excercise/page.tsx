@@ -10,31 +10,7 @@ export const exerciseParams = [
   {
     title: "uploadfile",
     description: "testing for checkbox with prisma",
-  },
-  {
-    title: "checkbox",
-    description: "testing for checkbox with prisma",
-  },
-  {
-    title: "uploadfile",
-    description: "testing for checkbox with prisma",
-  },
-  {
-    title: "checkbox",
-    description: "testing for checkbox with prisma",
-  },
-  {
-    title: "uploadfile",
-    description: "testing for checkbox with prisma",
-  },
-  {
-    title: "checkbox",
-    description: "testing for checkbox with prisma",
-  },
-  {
-    title: "uploadfile",
-    description: "testing for checkbox with prisma",
-  },
+  }
 ];
 
 const Excercise = () => {

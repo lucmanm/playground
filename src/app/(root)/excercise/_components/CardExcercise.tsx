@@ -8,7 +8,7 @@ type TItemProps = {
 export default function CardExcercise({ item }: { item: TItemProps }) {
   return (
     <Link href={`/excercise/${item.title}`}>
-      <div className="group rounded-lg overflow-hidden  shadow-sm bg-slate-100/60">
+      <div className="group rounded-lg overflow-hidden  shadow-sm border">
         <ImageIcon className="w-full h-60 object-cover group-hover:opacity-80 transition-opacity" />
         {/* <Image
         alt="Web Development"
