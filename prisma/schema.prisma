@@ -16,7 +16,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  role          Role      @default(USER)
+  role          String?     
   accounts      Account[]
   sessions      Session[]
 }
@@ -74,8 +74,3 @@ model Technology {
   project   Project[] @relation("ProjectToTechnology")
 }
 
-enum Role {
-  USER
-  ADMIN
-  EDITOR
-}
