@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/tooltip";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function MyAccountMenu({ user }: { user: User | undefined }) {
   const router = useRouter();
@@ -29,18 +30,20 @@ export default function MyAccountMenu({ user }: { user: User | undefined }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
               size="icon"
-              className="overflow-hidden rounded-full"
+              className="rounded-full"
             >
-              <CircleUser />
-              {/* <Image
-          src="/placeholder-user.jpg"
-          width={36}
-          height={36}
-          alt="Avatar"
-          className="overflow-hidden rounded-full"
-        /> */}
+              {user.image ? (
+                <Image
+                  src={user.image}
+                  width={36}
+                  height={36}
+                  alt="Avatar"
+                  className="overflow-hidden rounded-full "
+                />
+              ) : (
+                <CircleUser />
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -70,7 +73,7 @@ export default function MyAccountMenu({ user }: { user: User | undefined }) {
               className="overflow-hidden rounded-full cursor-pointer"
               onClick={() => router.push("/login")}
             >
-              <Lock className="text-slate-950"/>
+              <Lock className="text-slate-950" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom" sideOffset={5}>

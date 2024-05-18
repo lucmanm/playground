@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -18,27 +17,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Bird,
-  Rabbit,
-  Settings,
-  Share,
-  Turtle,
-} from "lucide-react";
+import { Bird, Rabbit, Settings, Share, Turtle } from "lucide-react";
 import React from "react";
 import Link from "next/link";
 import MyAccountMenu from "./my-account-menu";
 import { auth } from "@/lib/auth";
 
 export default async function Header() {
-  const session =  await auth();
-  const user = session?.user
+  const session = await auth();
+  const user = session?.user;
   return (
-    <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1  px-4 bg-slate-950 text-white">
+    <header className="sticky top-0 z-10  h-[57px] items-center gap-1  px-4 bg-slate-950 text-white flex justify-between">
       <Link href="/">
         <h1 className="text-xl font-semibold">Playground</h1>
       </Link>
-      <Drawer>
+      {/* <Drawer>
         <DrawerTrigger asChild>
           <Button variant="ghost" size="icon" className="md:hidden">
             <Settings className="size-4" />
@@ -155,12 +148,16 @@ export default async function Header() {
             </fieldset>
           </form>
         </DrawerContent>
-      </Drawer>
-      <Button variant="outline" size="sm" className="ml-auto gap-1.5 text-sm text-slate-950">
+      </Drawer> */}
+      {/* <Button
+        variant="outline"
+        size="sm"
+        className="ml-auto gap-1.5 text-sm text-slate-950"
+      >
         <Share className="size-3.5" />
         Share
-      </Button>
-     <MyAccountMenu user={user}/>
+      </Button> */}
+      <MyAccountMenu user={user} />
     </header>
   );
 }

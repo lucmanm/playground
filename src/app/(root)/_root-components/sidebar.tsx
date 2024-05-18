@@ -4,16 +4,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Book,
-  Code2,
-  Contact2Icon,
-  SquareTerminal,
-  User2,
-} from "lucide-react";
+import { auth } from "@/lib/auth";
+import { Book, Code2, Mail, SquareTerminal, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 const menuData = [
   {
     name: "Projects",
@@ -30,8 +24,14 @@ const menuData = [
     url: "/about-me",
     icon: <Book className="size-5" />,
   },
+  {
+    name: "Contact Me",
+    url: "/contact-me",
+    icon: <Mail className="size-5" />,
+  },
 ];
-export default function Sidebar() {
+export default async function Sidebar() {
+  const session = await auth();
   return (
     <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col  bg-slate-950 text-slate-100">
       <div className=" p-2">
@@ -76,7 +76,7 @@ export default function Sidebar() {
         ))}
       </nav>
       <nav className="mt-auto grid gap-1 p-2">
-        <Tooltip>
+        {/* <Tooltip>
           <TooltipTrigger asChild>
             <Link href="/contact-me">
               <Button
@@ -91,25 +91,27 @@ export default function Sidebar() {
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
             Contact Me
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link href="/settings">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mt-auto rounded-lg"
-                aria-label="Account"
-              >
-                <User2 className="size-5" />
-              </Button>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            Account
-          </TooltipContent>
-        </Tooltip>
+          </TooltipContent> */}
+        {/* </Tooltip> */}
+        {session && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link href="/settings">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="mt-auto rounded-lg"
+                  aria-label="Account"
+                >
+                  <User2 className="size-5" />
+                </Button>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              Account
+            </TooltipContent>
+          </Tooltip>
+        )}
       </nav>
     </aside>
   );
