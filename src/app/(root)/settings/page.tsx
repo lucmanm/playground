@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
@@ -35,10 +34,7 @@ const Settings = async () => {
             General
           </Link>
           <Link href="#">Security</Link>
-          <Link href="#">Integrations</Link>
-          <Link href="#">Support</Link>
-          <Link href="#">Organizations</Link>
-          <Link href="/seed-data">Seeding Data</Link>
+          <Link href="/settings/seed-data">Seeding Data</Link>
         </nav>
         <div className="grid gap-6">
           <Card x-chunk="dashboard-04-chunk-1">
