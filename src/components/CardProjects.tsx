@@ -27,26 +27,19 @@ export default function CardProjects({
   ) => {
     event.preventDefault();
     try {
-      if (user?.role === "ADMIN") {
+      if (user?.role) {
         await deleteProject(item.id);
         toast({
           description: "Successfully Deleted.",
           variant: "success",
         });
-      }
-      if (user?.role === "USER") {
-        await deleteUserProject(item.id);
+      } else {
         toast({
-          description: "Successfully Deleted.",
-          variant: "success",
+          description: "Only Admin can Delete this project",
+          title: "Contact: lucmanm@icloud.com",
+          variant: "destructive",
         });
       }
-      toast({
-        description: "Only Admin can Delete this project",
-        title: "Contact: lucmanm@icloud.com",
-        variant: "destructive",
-      });
-
     } catch (error) {
       console.log("ERROR_ONDELETE_SUBMIT_FORM", error);
     }

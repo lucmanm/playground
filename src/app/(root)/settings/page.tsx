@@ -38,7 +38,7 @@ const Settings = async () => {
           <Link href="#">Integrations</Link>
           <Link href="#">Support</Link>
           <Link href="#">Organizations</Link>
-          <Link href="#">Advanced</Link>
+          <Link href="/seed-data">Seeding Data</Link>
         </nav>
         <div className="grid gap-6">
           <Card x-chunk="dashboard-04-chunk-1">
@@ -58,7 +58,7 @@ const Settings = async () => {
               <Button>Save</Button>
             </CardFooter>
           </Card>
-          <Card x-chunk="dashboard-04-chunk-2">
+          {/* <Card x-chunk="dashboard-04-chunk-2">
             <CardHeader>
               <CardTitle>Plugins Directory</CardTitle>
               <CardDescription>
@@ -86,7 +86,7 @@ const Settings = async () => {
             <CardFooter className="border-t px-6 py-4">
               <Button>Save</Button>
             </CardFooter>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </main>

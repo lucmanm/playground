@@ -103,6 +103,7 @@ export async function deleteProject(productId: string | undefined) {
 
         }
         revalidatePath("/")
+
     } catch (error) {
         console.log("ERROR_DELETE_PROJECT", error);
 
@@ -117,10 +118,9 @@ export async function deleteProject(productId: string | undefined) {
             await prisma.project.delete({
                 where: {
                     id: productId,
-                    userId: user?.id 
+                    userId: user?.id
                 }
             })
-
         }
         revalidatePath("/")
     } catch (error) {
