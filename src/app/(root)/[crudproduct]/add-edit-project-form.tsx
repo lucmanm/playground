@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Technology } from "@prisma/client";
 import { createProject, updateProject } from "@/actions/project";
+import { useSession } from "next-auth/react";
 const items = [
   {
     id: "recents",
@@ -60,13 +61,12 @@ export const projectSchema = z.object({
   name: z.string().min(1, "Please enter title of your project"),
   description: z.string().min(1, "Please enter description of your project"),
   technology: z
-  .object({
-  id: z.string(),
-  name: z.string(),
-  })
-  .array(),
+    .object({
+      id: z.string(),
+      name: z.string(),
+    })
+    .array(),
 });
-
 
 type TProductProps = {
   data: z.infer<typeof projectSchema> | null;
@@ -77,6 +77,7 @@ export default function AddEditProjectForm({
   data,
   technology,
 }: TProductProps) {
+  
   const router = useRouter();
   const { toast } = useToast();
 
@@ -89,7 +90,7 @@ export default function AddEditProjectForm({
       : {
           name: "",
           description: "",
-          technology: []
+          technology: [],
         },
   });
 

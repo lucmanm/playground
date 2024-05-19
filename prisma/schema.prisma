@@ -16,9 +16,10 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  role          String?     
+  role          String    @default("USER")
   accounts      Account[]
   sessions      Session[]
+  Project       Project[]
 }
 
 model Account {
@@ -64,6 +65,8 @@ model Project {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   technology  Technology[] @relation("ProjectToTechnology")
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
 }
 
 model Technology {
@@ -73,4 +76,3 @@ model Technology {
   updatedAt DateTime  @updatedAt
   project   Project[] @relation("ProjectToTechnology")
 }
-

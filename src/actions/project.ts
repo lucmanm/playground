@@ -1,7 +1,9 @@
 "use server"
 
 import { projectSchema } from "@/app/(root)/[crudproduct]/add-edit-project-form";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { User } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -17,16 +19,21 @@ type TProjectProps = {
 // Create Single Project Query
 export async function createProject(data: z.infer<typeof projectSchema>) {
     try {
-        
-        const { name, description } = data
-        await prisma.project.create({
+        const session = await auth()
+        const userId = session?.user.id
 
-            data: {
-                name,
-                description
-            }
-        })
+        if (userId) {
+            const { name, description, } = data
+            await prisma.project.create({
 
+                data: {
+                    name,
+                    description,
+                    userId: userId
+                }
+            })
+
+        }
         revalidatePath("/")
     } catch (error) {
         console.log("ERROR_CREATE_PROJECT", error);
@@ -81,16 +88,43 @@ export async function createBulkProject(excelData: TProjectProps[]) {
 //     }
 // }
 
-export async function deleteProject(paramId: string | undefined) {
+export async function deleteProject(productId: string | undefined) {
     try {
-        await prisma.project.delete({
-            where:{
-                id: paramId
-            }
-        })
+        const session = await auth()
+        const user = session?.user
+
+        if (user?.role === "ADMIN") {
+
+            await prisma.project.delete({
+                where: {
+                    id: productId
+                }
+            })
+
+        }
         revalidatePath("/")
     } catch (error) {
         console.log("ERROR_DELETE_PROJECT", error);
-        
+
+    }
+} export async function deleteUserProject(productId: string | undefined) {
+    try {
+        const session = await auth()
+        const user = session?.user
+
+        if (user?.role === "USER") {
+
+            await prisma.project.delete({
+                where: {
+                    id: productId,
+                    userId: user?.id 
+                }
+            })
+
+        }
+        revalidatePath("/")
+    } catch (error) {
+        console.log("ERROR_DELETE_PROJECT", error);
+
     }
 }

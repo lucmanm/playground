@@ -1,9 +1,10 @@
 "use client";
 import { ImageIcon, X } from "lucide-react";
 import Link from "next/link";
-import { MouseEvent, MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 import { toast } from "./ui/use-toast";
-import { deleteProject } from "@/actions/project";
+import { deleteProject, deleteUserProject } from "@/actions/project";
+import { User } from "next-auth";
 type TItemProps = {
   id: string | undefined;
   name: string | undefined;
@@ -14,17 +15,43 @@ type TItemProps = {
   }[];
 };
 
-export default function CardProjects({ item }: { item: TItemProps }) {
+export default function CardProjects({
+  item,
+  user,
+}: {
+  item: TItemProps;
+  user?: User;
+}) {
   const onDelete: MouseEventHandler<SVGSVGElement> | undefined = async (
     event
   ) => {
     event.preventDefault();
-    await deleteProject(item.id);
-    toast({
-      description: "Successfully Deleted.",
-      variant: "destructive",
-    });
+    try {
+      if (user?.role === "ADMIN") {
+        await deleteProject(item.id);
+        toast({
+          description: "Successfully Deleted.",
+          variant: "success",
+        });
+      }
+      if (user?.role === "USER") {
+        await deleteUserProject(item.id);
+        toast({
+          description: "Successfully Deleted.",
+          variant: "success",
+        });
+      }
+      toast({
+        description: "Only Admin can Delete this project",
+        title: "Contact: lucmanm@icloud.com",
+        variant: "destructive",
+      });
+
+    } catch (error) {
+      console.log("ERROR_ONDELETE_SUBMIT_FORM", error);
+    }
   };
+
   return (
     <Link href={`/${item.id}`}>
       <div className="group/card h-full rounded-lg overflow-hidden border shadow-sm relative">
