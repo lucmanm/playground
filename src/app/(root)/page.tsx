@@ -3,8 +3,11 @@ import CardProjects from "@/components/CardProjects";
 import { prisma } from "@/lib/prisma";
 
 import CustomButton from "@/app/(root)/_root-components/CustomButton";
+import { auth } from "@/lib/auth";
 
 const Dashboard = async () => {
+  const session = await auth()
+  const user = session?.user
   const projects = await prisma.project.findMany({
     include: {
       technology: true,
@@ -24,7 +27,9 @@ const Dashboard = async () => {
             </p>
           </div>
           <div>
-            <CustomButton>Add Product</CustomButton>
+            {
+              user?.role === "ADMIN" && <CustomButton>Add Product</CustomButton>
+            }
           </div>
         </div>
  
