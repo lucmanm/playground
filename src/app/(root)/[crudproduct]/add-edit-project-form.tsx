@@ -97,14 +97,12 @@ export default function AddEditProjectForm({
   const onSubmit = async (values: z.infer<typeof projectSchema>) => {
     try {
       if (data) {
-        console.log("UPDATE");
         await updateProject(values);
         toast({
           description: `Succesfully Updated.`,
           variant: "success",
         });
       } else {
-        console.log("CREATE");
         await createProject(values);
         toast({
           description: `Succesfully Created.`,
@@ -132,6 +130,7 @@ export default function AddEditProjectForm({
             className="w-2/3 space-y-6"
           >
             {/* Text Input for title */}
+
             <FormField
               control={form.control}
               name="name"

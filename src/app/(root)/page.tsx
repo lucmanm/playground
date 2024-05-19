@@ -3,7 +3,8 @@ import CardProjects from "@/components/CardProjects";
 import { prisma } from "@/lib/prisma";
 
 import CustomButton from "@/app/(root)/_root-components/CustomButton";
-import { auth } from "@/lib/auth";
+import { auth, signIn } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = async () => {
   const session = await auth();
@@ -28,7 +29,18 @@ const Dashboard = async () => {
           </div>
           <div>
             {/* any one can add product */}
-            {session && <CustomButton>Add Product</CustomButton>}
+            {session ? (
+              <CustomButton>Add Product</CustomButton>
+            ) : (
+              <form
+                action={async () => {
+                  "use server";
+                  await signIn("google");
+                }}
+              >
+                <Button type="submit">Add Product</Button>
+              </form>
+            )}
           </div>
         </div>
 
