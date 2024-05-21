@@ -34,7 +34,6 @@ export default function CardExcercise({ item }: { item: TItemProps }) {
         <div className="absolute w-full h-full flex items-center justify-center hover:bg-slate-950/5">
           <FaGithub
             className="scale-0 opacity-0 group-hover/card:opacity-100 transition-all dura1 group-hover/card:scale-100 absolute size-10  self-center bg-slate-100 rounded-full"
-
             onClick={(event) => {
               event.preventDefault();
               router.push(`/excercise/${item.sPath}`);

@@ -5,8 +5,8 @@ import { MouseEventHandler } from "react";
 import { toast } from "./ui/use-toast";
 import { deleteProject } from "@/actions/project";
 import { User } from "next-auth";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
+
 type TItemProps = {
   id: string | undefined;
   name: string | undefined;
@@ -17,19 +17,10 @@ type TItemProps = {
   }[];
 };
 
-export default function CardProjects({
-  item,
-  user,
-}: {
-  item: TItemProps;
-  user?: User;
-}) {
-  const onDelete: MouseEventHandler<SVGSVGElement> | undefined = async (
-    event
-  ) => {
+export default function CardProjects({ item, user }: { item: TItemProps; user?: User }) {
+  const onDelete: MouseEventHandler<SVGSVGElement> | undefined = async (event) => {
     event.preventDefault();
     try {
-
       if (user?.role === "ADMIN") {
         await deleteProject(item.id);
         toast({
@@ -88,15 +79,10 @@ export default function CardProjects({
       /> */}
         <div className="p-4 bg-white dark:bg-gray-950">
           <h3 className="text-lg font-semibold">{item.name}</h3>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">
-            {item.description}
-          </p>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">{item.description}</p>
           <div className="flex items-center gap-2 mt-4">
             {item.technology.map((data, index) => (
-              <span
-                key={index}
-                className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-xs font-medium text-gray-500 dark:text-gray-400"
-              >
+              <span key={index} className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-xs font-medium text-gray-500 dark:text-gray-400">
                 {data.name}
               </span>
             ))}
