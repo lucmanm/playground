@@ -18,8 +18,8 @@ model User {
   updatedAt     DateTime  @updatedAt
   role          String    @default("USER")
   accounts      Account[]
+  project       Project[]
   sessions      Session[]
-  Project       Project[]
 }
 
 model Account {
@@ -64,9 +64,9 @@ model Project {
   description String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  technology  Technology[] @relation("ProjectToTechnology")
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  technology  Technology[] @relation("ProjectToTechnology")
 }
 
 model Technology {
