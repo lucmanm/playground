@@ -101,19 +101,25 @@ export async function deleteProject(productId: string | undefined) {
                     id: productId
                 }
             })
-            
+
         } else if (user?.role === "USER") {
-           const status =  await prisma.project.delete({
-                where: {
+            const project = await prisma.project.findFirst({
+                where:
+                {
                     id: productId,
                     user: {
-                        role: {
-                            equals :user.role
-                        }
+                        role: user.role
                     }
                 },
             })
-            if(!status){
+
+            if (project) {
+                 await prisma.project.delete({
+                    where: {
+                        id: productId
+                    }
+                })
+            } else {
                 return { error: "Only Admin can delete this project" }
             }
         } else {

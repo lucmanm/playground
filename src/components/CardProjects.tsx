@@ -47,9 +47,9 @@ export default function CardProjects({
           });
         } else {
           toast({
-            title: "Successfully Deleted.",
+            title: "Authorized User",
             description: status?.error,
-            variant: "success",
+            variant: "destructive",
           });
         }
       } else if (user?.role === undefined) {
