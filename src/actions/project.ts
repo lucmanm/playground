@@ -1,23 +1,13 @@
 "use server"
 
-import { projectSchema } from "@/app/(root)/[crudproduct]/add-edit-project-form";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { error } from "console";
+import { defaultprojectSchema } from "@/type/validation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 
-// export const projectSchema = z.object({
-//     name: z.string().min(1),
-//     description: z.string().min(1)
-// })
-type TProjectProps = {
-    name: string,
-    description: string
-}
-// Create Single Project Query
-export async function createProject(data: z.infer<typeof projectSchema>) {
+export async function createProject(data: z.infer<typeof defaultprojectSchema>) {
     try {
         const session = await auth()
         const userId = session?.user.id
@@ -25,14 +15,12 @@ export async function createProject(data: z.infer<typeof projectSchema>) {
         if (userId) {
             const { name, description, } = data
             await prisma.project.create({
-
                 data: {
                     name,
                     description,
                     userId: userId
                 }
             })
-
         }
         revalidatePath("/")
     } catch (error) {
@@ -42,7 +30,7 @@ export async function createProject(data: z.infer<typeof projectSchema>) {
 
 
 // Update Project Query
-export async function updateProject(data: z.infer<typeof projectSchema>) {
+export async function updateProject(data: z.infer<typeof defaultprojectSchema>) {
     try {
         const { name, description } = data
 
@@ -62,8 +50,8 @@ export async function updateProject(data: z.infer<typeof projectSchema>) {
 }
 
 
-// Create Nuld Project Query
-export async function createBulkProject(excelData: TProjectProps[]) {
+// Create Nuld Project Query schema type remove
+export async function createBulkProject(excelData) {
     try {
         await prisma.project.createMany({
             data: excelData.map(item => ({
@@ -114,7 +102,7 @@ export async function deleteProject(productId: string | undefined) {
             })
 
             if (project) {
-                 await prisma.project.delete({
+                await prisma.project.delete({
                     where: {
                         id: productId
                     }

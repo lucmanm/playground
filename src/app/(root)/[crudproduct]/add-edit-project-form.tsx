@@ -1,11 +1,5 @@
 "use client";
-import {
-  CardTitle,
-  CardDescription,
-  CardHeader,
-  CardContent,
-  Card,
-} from "@/components/ui/card";
+import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -14,20 +8,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Technology } from "@prisma/client";
 import { createProject, updateProject } from "@/actions/project";
-import { useSession } from "next-auth/react";
+import { defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
 const items = [
   {
     id: "recents",
@@ -56,35 +42,25 @@ const items = [
 ] as const;
 
 // zodSchema
-export const projectSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().min(1, "Please enter title of your project"),
-  description: z.string().min(1, "Please enter description of your project"),
-  technology: z
-    .object({
-      id: z.string(),
-      name: z.string(),
-    })
-    .array(),
-});
 
 type TProductProps = {
-  data: z.infer<typeof projectSchema> | null;
-  technology: Technology[];
+  data:
+    | (z.infer<typeof defaultProjectSchema> & {
+        technology: z.infer<typeof defaultTechnologySchema>[];
+      })
+    | null;
+  technology: z.infer<typeof defaultTechnologySchema>[]
 };
 
-export default function AddEditProjectForm({
-  data,
-  technology,
-}: TProductProps) {
-  
+export default function AddEditProjectForm({ data, technology }: TProductProps) {
+
   const router = useRouter();
   const { toast } = useToast();
 
   const title = data ? "Save Changes" : "Create Project";
 
-  const form = useForm<z.infer<typeof projectSchema>>({
-    resolver: zodResolver(projectSchema),
+  const form = useForm<z.infer<typeof defaultProjectSchema>>({
+    resolver: zodResolver(defaultProjectSchema),
     defaultValues: data
       ? { ...data }
       : {
@@ -94,7 +70,7 @@ export default function AddEditProjectForm({
         },
   });
 
-  const onSubmit = async (values: z.infer<typeof projectSchema>) => {
+  const onSubmit = async (values: z.infer<typeof defaultProjectSchema>) => {
     try {
       if (data) {
         await updateProject(values);
@@ -119,16 +95,11 @@ export default function AddEditProjectForm({
     <Card className="container lg:my-32 border-none">
       <CardHeader>
         <CardTitle>Add Project</CardTitle>
-        <CardDescription>
-          Enter all the information of your project
-        </CardDescription>
+        <CardDescription>Enter all the information of your project</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-2/3 space-y-6"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
             {/* Text Input for title */}
 
             <FormField
@@ -138,14 +109,9 @@ export default function AddEditProjectForm({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Please enter title of your project"
-                      {...field}
-                    />
+                    <Input placeholder="Please enter title of your project" {...field} />
                   </FormControl>
-                  <FormDescription className="text-red-800 ">
-                    {form.formState.errors.name && ""}
-                  </FormDescription>
+                  <FormDescription className="text-red-800 ">{form.formState.errors.name && ""}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -160,15 +126,9 @@ export default function AddEditProjectForm({
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Please enter  description of your project"
-                      className="resize-none"
-                      {...field}
-                    />
+                    <Textarea placeholder="Please enter  description of your project" className="resize-none" {...field} />
                   </FormControl>
-                  <FormDescription className="text-red-800">
-                    {form.formState.errors.description && ""}
-                  </FormDescription>
+                  <FormDescription className="text-red-800">{form.formState.errors.description && ""}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -184,9 +144,7 @@ export default function AddEditProjectForm({
                   <FormItem>
                     <div className="mb-4">
                       <FormLabel className="text-base">Select Tech</FormLabel>
-                      <FormDescription>
-                        Select the items you want to display in the sidebar.
-                      </FormDescription>
+                      <FormDescription>Select the items you want to display in the sidebar.</FormDescription>
                     </div>
                     {technology.map((item) => (
                       <FormField
@@ -195,30 +153,18 @@ export default function AddEditProjectForm({
                         name="technology"
                         render={({ field }) => {
                           return (
-                            <FormItem
-                              key={item.id}
-                              className="flex flex-row items-start space-x-3 space-y-0 capitalize"
-                            >
+                            <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0 capitalize">
                               <FormControl>
                                 <Checkbox
                                   checked={field.value?.includes(item.id)}
-                                  // onCheckedChange={(checked) => {
-                                  //   return checked
-                                  //     ? field.onChange([
-                                  //         ...field.value,
-                                  //         item.id,
-                                  //       ])
-                                  //     : field.onChange(
-                                  //         field.value?.filter(
-                                  //           (value) => value !== item.id
-                                  //         )
-                                  //       );
-                                  // }}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([...field.value, item.id])
+                                      : field.onChange(field.value?.filter((value) => value !== item.id));
+                                  }}
                                 />
                               </FormControl>
-                              <FormLabel className="font-normal">
-                                {item.name}
-                              </FormLabel>
+                              <FormLabel className="font-normal">{item.name}</FormLabel>
                             </FormItem>
                           );
                         }}
