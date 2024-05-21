@@ -3,7 +3,7 @@
 import { projectSchema } from "@/app/(root)/[crudproduct]/add-edit-project-form";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { User } from "next-auth";
+import { error } from "console";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -45,6 +45,7 @@ export async function createProject(data: z.infer<typeof projectSchema>) {
 export async function updateProject(data: z.infer<typeof projectSchema>) {
     try {
         const { name, description } = data
+
         await prisma.project.update({
             where: {
                 id: data.id
@@ -100,31 +101,29 @@ export async function deleteProject(productId: string | undefined) {
                     id: productId
                 }
             })
-
-        }
-        revalidatePath("/")
-
-    } catch (error) {
-        console.log("ERROR_DELETE_PROJECT", error);
-
-    }
-} export async function deleteUserProject(productId: string | undefined) {
-    try {
-        const session = await auth()
-        const user = session?.user
-
-        if (user?.role === "USER") {
-
-            await prisma.project.delete({
+            
+        } else if (user?.role === "USER") {
+           const status =  await prisma.project.delete({
                 where: {
                     id: productId,
-                    userId: user?.id
-                }
+                    user: {
+                        role: {
+                            equals :user.role
+                        }
+                    }
+                },
             })
+            if(!status){
+                return { error: "Only Admin can delete this project" }
+            }
+        } else {
+            return { error: "Only authorized user can take and action!" }
         }
+
         revalidatePath("/")
+
     } catch (error) {
         console.log("ERROR_DELETE_PROJECT", error);
 
     }
-}
+} 

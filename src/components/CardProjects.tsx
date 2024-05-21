@@ -3,8 +3,10 @@ import { ImageIcon, X } from "lucide-react";
 import Link from "next/link";
 import { MouseEventHandler } from "react";
 import { toast } from "./ui/use-toast";
-import { deleteProject, deleteUserProject } from "@/actions/project";
+import { deleteProject } from "@/actions/project";
 import { User } from "next-auth";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 type TItemProps = {
   id: string | undefined;
   name: string | undefined;
@@ -27,6 +29,7 @@ export default function CardProjects({
   ) => {
     event.preventDefault();
     try {
+
       if (user?.role === "ADMIN") {
         await deleteProject(item.id);
         toast({
@@ -34,17 +37,30 @@ export default function CardProjects({
           variant: "success",
         });
       } else if (user?.role === "USER") {
-        await deleteUserProject(item.id)
-        toast({
-          description: "Successfully Deleted.",
-          variant: "success",
-        });
-      } else {
-        toast({
-          description: "Contact: lucmanm@icloud.com",
-          title: "Only Admin can delete this",
-          variant: "destructive",
-        });
+        const status = await deleteProject(item.id);
+
+        if (!status?.error) {
+          toast({
+            title: "Authorization",
+            description: "Only admin can delete this project",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Successfully Deleted.",
+            description: status?.error,
+            variant: "success",
+          });
+        }
+      } else if (user?.role === undefined) {
+        const status = await deleteProject(item.id);
+        if (status?.error) {
+          toast({
+            title: "Sign-Up or Login",
+            description: "Only Registered user can take an action!",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
       console.log("ERROR_ONDELETE_SUBMIT_FORM", error);
