@@ -4,7 +4,7 @@ import CardExcercise from "./_components/CardExcercise";
 import Container from "./[excercisetitle]/_components/Container";
 export const exerciseParams = [
   {
-    sPath: "checkbox",
+    sPath: "CheckboxReactHookFormMultiple",
     title: "Check box Filter",
     description: "testing for checkbox with prisma",
   },

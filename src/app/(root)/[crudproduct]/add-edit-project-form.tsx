@@ -11,9 +11,8 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Technology } from "@prisma/client";
 import { createProject, updateProject } from "@/actions/project";
-import { defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
+import { defaultFormProjectSchema, defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
 const items = [
   {
     id: "recents",
@@ -41,26 +40,19 @@ const items = [
   },
 ] as const;
 
-// zodSchema
-
-type TProductProps = {
-  data:
-    | (z.infer<typeof defaultProjectSchema> & {
-        technology: z.infer<typeof defaultTechnologySchema>[];
-      })
-    | null;
-  technology: z.infer<typeof defaultTechnologySchema>[]
+type TAddEditProjectForm = {
+  data: z.infer<typeof defaultProjectSchema> | null;
+  technology: z.infer<typeof defaultTechnologySchema>;
 };
 
-export default function AddEditProjectForm({ data, technology }: TProductProps) {
-
+const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology }) => {
   const router = useRouter();
   const { toast } = useToast();
 
   const title = data ? "Save Changes" : "Create Project";
 
-  const form = useForm<z.infer<typeof defaultProjectSchema>>({
-    resolver: zodResolver(defaultProjectSchema),
+  const form = useForm<z.infer<typeof defaultFormProjectSchema>>({
+    resolver: zodResolver(defaultFormProjectSchema),
     defaultValues: data
       ? { ...data }
       : {
@@ -184,4 +176,5 @@ export default function AddEditProjectForm({ data, technology }: TProductProps) 
       </CardContent>
     </Card>
   );
-}
+};
+export default AddEditProjectForm;
