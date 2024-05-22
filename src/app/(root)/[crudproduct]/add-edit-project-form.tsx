@@ -13,32 +13,19 @@ import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { createProject, updateProject } from "@/actions/project";
 import { defaultFormProjectSchema, defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
-const items = [
-  {
-    id: "recents",
-    label: "Recents",
-  },
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "applications",
-    label: "Applications",
-  },
-  {
-    id: "desktop",
-    label: "Desktop",
-  },
-  {
-    id: "downloads",
-    label: "Downloads",
-  },
-  {
-    id: "documents",
-    label: "Documents",
-  },
-] as const;
+
+export const zodResolverPrjectScema = z.object({
+  name: z.string().min(1, "Please enter title of your project"),
+  description: z.string().min(1, "Please enter description of your project"),
+  technology: z.array(
+    z.object({
+      name: z.array(z.string()).refine((value) => value.some((item) => item), {
+        message: "You have to select at least one item.",
+      }),
+    })
+  ),
+});
+
 
 type TAddEditProjectForm = {
   data: z.infer<typeof defaultProjectSchema> | null;
@@ -51,10 +38,10 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
 
   const title = data ? "Save Changes" : "Create Project";
 
-  const form = useForm<z.infer<typeof defaultFormProjectSchema>>({
+  const form = useForm<z.infer<typeof zodResolverPrjectScema>>({
     resolver: zodResolver(defaultFormProjectSchema),
     defaultValues: data
-      ? { ...data }
+      ? { ...data, technology }
       : {
           name: "",
           description: "",
@@ -62,7 +49,7 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
         },
   });
 
-  const onSubmit = async (values: z.infer<typeof defaultProjectSchema>) => {
+  const onSubmit = async (values: z.infer<typeof zodResolverPrjectScema>) => {
     try {
       if (data) {
         await updateProject(values);
@@ -148,12 +135,12 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
                             <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0 capitalize">
                               <FormControl>
                                 <Checkbox
-                                  checked={field.value?.includes(item.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([...field.value, item.id])
-                                      : field.onChange(field.value?.filter((value) => value !== item.id));
-                                  }}
+                                  // checked={field.value?.includes(item.id => ({data?.technology.}))}
+                                  // onCheckedChange={(checked) => {
+                                  //   return checked
+                                  //     ? field.onChange([...field.value, item.id])
+                                  //     : field.onChange(field.value?.filter((value) => value !== item.id));
+                                  // }}
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">{item.name}</FormLabel>

@@ -14,7 +14,6 @@ export const defaultProjectSchema = z.object({
 });
 
 export const defaultFormProjectSchema = z.object({
-    id: z.string().optional(),
     name: z.string().min(1, "Please enter title of your project"),
     description: z.string().min(1, "Please enter description of your project"),
     technology: z.array(z.object({
