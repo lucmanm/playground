@@ -12,20 +12,17 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { createProject, updateProject } from "@/actions/project";
-import { defaultFormProjectSchema, defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
+import {  defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
 
-export const zodResolverPrjectScema = z.object({
+export const defaultFormProjectSchema = z.object({
   name: z.string().min(1, "Please enter title of your project"),
   description: z.string().min(1, "Please enter description of your project"),
-  technology: z.array(
-    z.object({
+  technology: z.array(z.object({
       name: z.array(z.string()).refine((value) => value.some((item) => item), {
-        message: "You have to select at least one item.",
-      }),
-    })
-  ),
+          message: "You have to select at least one item.",
+        })
+  }))
 });
-
 
 type TAddEditProjectForm = {
   data: z.infer<typeof defaultProjectSchema> | null;
@@ -38,7 +35,7 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
 
   const title = data ? "Save Changes" : "Create Project";
 
-  const form = useForm<z.infer<typeof zodResolverPrjectScema>>({
+  const form = useForm<z.infer<typeof defaultFormProjectSchema>>({
     resolver: zodResolver(defaultFormProjectSchema),
     defaultValues: data
       ? { ...data, technology }
@@ -49,7 +46,7 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
         },
   });
 
-  const onSubmit = async (values: z.infer<typeof zodResolverPrjectScema>) => {
+  const onSubmit = async (values: z.infer<typeof defaultFormProjectSchema>) => {
     try {
       if (data) {
         await updateProject(values);
@@ -115,45 +112,60 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
 
             {/* check for selection of tech stacks */}
 
-            {
               <FormField
-                control={form.control}
-                name="technology"
-                render={() => (
-                  <FormItem>
-                    <div className="mb-4">
-                      <FormLabel className="text-base">Select Tech</FormLabel>
-                      <FormDescription>Select the items you want to display in the sidebar.</FormDescription>
-                    </div>
-                    {technology.map((item) => (
-                      <FormField
-                        key={item.id}
-                        control={form.control}
-                        name="technology"
-                        render={({ field }) => {
-                          return (
-                            <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0 capitalize">
-                              <FormControl>
-                                <Checkbox
-                                  // checked={field.value?.includes(item.id => ({data?.technology.}))}
-                                  // onCheckedChange={(checked) => {
-                                  //   return checked
-                                  //     ? field.onChange([...field.value, item.id])
-                                  //     : field.onChange(field.value?.filter((value) => value !== item.id));
-                                  // }}
-                                />
-                              </FormControl>
-                              <FormLabel className="font-normal">{item.name}</FormLabel>
-                            </FormItem>
-                          );
-                        }}
-                      />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            }
+              control={form.control}
+              name="technology"
+              render={() => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base">Sidebar</FormLabel>
+                    
+                    <FormDescription>
+                    {
+                      data?.technology.map(data => data.name)
+                    }
+                      Select the items you want to display in the sidebar.
+                    </FormDescription>
+                  </div>
+                  {technology.map((item) => (
+                    <FormField
+                      key={item.id}
+                      control={form.control}
+                      name="technology"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={item.id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.filter(item =>
+                                  data?.technology.some(tech => tech.name === item.name)
+                                )}
+                                // onCheckedChange={(checked) => {
+                                //   return checked
+                                //     ? field.onChange([...field.value, item.id])
+                                //     : field.onChange(
+                                //         field.value?.filter(
+                                //           (value) => value !== item.id
+                                //         )
+                                //       )
+                                // }}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal">
+                              {item.name}
+                            </FormLabel>
+                          </FormItem>
+                        )
+                      }}
+                    />
+                  ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <Button type="submit" disabled={form.formState.isLoading}>
               {title}
