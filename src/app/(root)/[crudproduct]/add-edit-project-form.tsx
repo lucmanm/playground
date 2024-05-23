@@ -14,17 +14,22 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { createProject, updateProject } from "@/actions/project";
 import { defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
 
-export const defaultFormProjectSchema = z.object({
-  name: z.string().min(1, "Please enter title of your project"),
-  description: z.string().min(1, "Please enter description of your project"),
-  technology: z.array(
-    z.object({
-      name: z.array(z.string()).refine((value) => value.some((item) => item), {
-        message: "You have to select at least one item.",
-      }),
-    })
-  ),
-});
+export const defaultFormProjectSchema = z
+  .object({
+    id: z.string().optional(),
+    name: z.string().min(1, "Please enter title of your project"),
+    description: z.string().min(1, "Please enter description of your project"),
+    // technology: z.string().min(1, "Select atleast one")
+    technology: z.array(
+      z.object({
+        id: z.string().optional(),
+        name: z.string(),
+      })
+    ),
+  })
+  .refine(({ technology }) => technology.some((item) => item), {
+    message: "You have to select at least one item.",
+  });
 
 type TAddEditProjectForm = {
   data: z.infer<typeof defaultProjectSchema> | null;
@@ -40,32 +45,20 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
   const form = useForm<z.infer<typeof defaultFormProjectSchema>>({
     resolver: zodResolver(defaultFormProjectSchema),
     defaultValues: data
-      ? { ...data, technology: data?.technology?.length ? data.technology : [] }
+      ? { ...data,  technology: data?.technology || []  }
       : {
           name: "",
           description: "",
-          technology: [""],
+          technology: [],
         },
   });
 
   const onSubmit = async (values: z.infer<typeof defaultFormProjectSchema>) => {
     try {
-      console.log(values.technology);
+      console.log(values);
+      form.reset()
 
-      // if (data) {
-      //   await updateProject(values);
-      //   toast({
-      //     description: `Succesfully Updated.`,
-      //     variant: "success",
-      //   });
-      // } else {
-      //   await createProject(values);
-      //   toast({
-      //     description: `Succesfully Created.`,
-      //     variant: "success",
-      //   });
-      // }
-      // router.push("/");
+
     } catch (error) {
       console.log("ERROR_SUBMIT_FORM", error);
     }
@@ -135,20 +128,17 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
                       control={form.control}
                       name="technology"
                       render={({ field }) => {
+                        const isChecked = field.value?.some((tech) => tech.name === item.name);
                         return (
                           <FormItem key={item.name} className="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
                               <Checkbox
-                                checked={field.value?.includes(item.name)}
-                                // onCheckedChange={(checked) => {
-                                //   return checked
-                                //     ? field.onChange([...field.value, item.id])
-                                //     : field.onChange(
-                                //         field.value?.filter(
-                                //           (value) => value !== item.id
-                                //         )
-                                //       )
-                                // }}
+                                checked={isChecked}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, { name: item.name }])
+                                    : field.onChange(field.value?.filter((value) => value.name !== item.name));
+                                }}
                               />
                             </FormControl>
                             <FormLabel className="text-sm font-normal">{item.name}</FormLabel>
