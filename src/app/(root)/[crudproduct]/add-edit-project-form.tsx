@@ -14,38 +14,37 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { createProject, updateProject } from "@/actions/project";
 import { defaultProjectSchema, defaultTechnologySchema } from "@/type/validation";
 
-export const defaultFormProjectSchema = z
+export const defaultProjectFormSchema = z
   .object({
-    id: z.string().optional(),
-    name: z.string().min(1, "Please enter title of your project"),
+    domain: z.string().min(1, "Please enter domain or website of your project"),
+    github: z.string().min(1, "Please enter domain or website of your project"),
     description: z.string().min(1, "Please enter description of your project"),
-    // technology: z.string().min(1, "Select atleast one")
     technology: z.array(
       z.object({
-        id: z.string().optional(),
         name: z.string(),
       })
     ),
   })
-  .refine(({ technology }) => technology.some((item) => item), {
+  .refine(({ technology }) => technology.length > 0, {
     message: "You have to select at least one item.",
+    path: ["technology"],
   });
 
-type TAddEditProjectForm = {
+type TProjectForm = {
   data: z.infer<typeof defaultProjectSchema> | null;
   technology: z.infer<typeof defaultTechnologySchema>;
 };
 
-const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology }) => {
+const AddEditProjectForm: React.FC<TProjectForm> = ({ data, technology }) => {
   const router = useRouter();
   const { toast } = useToast();
 
   const title = data ? "Save Changes" : "Create Project";
 
-  const form = useForm<z.infer<typeof defaultFormProjectSchema>>({
-    resolver: zodResolver(defaultFormProjectSchema),
+  const form = useForm<z.infer<typeof defaultProjectFormSchema>>({
+    resolver: zodResolver(defaultProjectFormSchema),
     defaultValues: data
-      ? { ...data,  technology: data?.technology || []  }
+      ? { ...data, technology: data?.technology || [] }
       : {
           name: "",
           description: "",
@@ -53,12 +52,9 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
         },
   });
 
-  const onSubmit = async (values: z.infer<typeof defaultFormProjectSchema>) => {
+  const onSubmit = async (values: z.infer<typeof defaultProjectFormSchema>) => {
     try {
       console.log(values);
-      form.reset()
-
-
     } catch (error) {
       console.log("ERROR_SUBMIT_FORM", error);
     }
@@ -77,21 +73,34 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
 
             <FormField
               control={form.control}
-              name="name"
+              name="domain"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel id="domain">Domain</FormLabel>
                   <FormControl>
-                    <Input placeholder="Please enter title of your project" {...field} />
+                    <Input placeholder="Please enter domain of your project" {...field} />
                   </FormControl>
-                  <FormDescription className="text-red-800 ">{form.formState.errors.name && ""}</FormDescription>
+                  <FormDescription className="text-red-800 ">{form.formState.errors.domain && ""}</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="github"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel id="github">Github</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Please enter github Link of your project" {...field} />
+                  </FormControl>
+                  <FormDescription className="text-red-800 ">{form.formState.errors.github && ""}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
             {/* TextArea for description */}
-
             <FormField
               control={form.control}
               name="description"
@@ -99,9 +108,9 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Please enter  description of your project" className="resize-none" {...field} />
+                    <Textarea className="resize-none" {...field} />
                   </FormControl>
-                  <FormDescription className="text-red-800">{form.formState.errors.description && ""}</FormDescription>
+                  <FormDescription>{form.formState.errors.description && ""}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -112,15 +121,16 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
             <FormField
               control={form.control}
               name="technology"
-              render={() => (
+              render={({field}) => (
                 <FormItem>
                   <div className="mb-4">
-                    <FormLabel className="text-base">Sidebar</FormLabel>
+                    <FormLabel 
+                    id="technology"
+                    className="text-base">
 
-                    <FormDescription>
-                      {data?.technology.map((data) => data.name)}
-                      Select the items you want to display in the sidebar.
-                    </FormDescription>
+                      Technologies
+                    </FormLabel>
+                    <FormDescription>Select technology Stack, Databases, Library, etc. that you used for this project.</FormDescription>
                   </div>
                   {technology.map((item) => (
                     <FormField
@@ -133,6 +143,7 @@ const AddEditProjectForm: React.FC<TAddEditProjectForm> = ({ data, technology })
                           <FormItem key={item.name} className="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
                               <Checkbox
+                              
                                 checked={isChecked}
                                 onCheckedChange={(checked) => {
                                   return checked

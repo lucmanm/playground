@@ -48,7 +48,8 @@ export default async function Sidebar() {
               width={28}
               height={28}
               alt="Avatar"
-              className="overflow-hidden rounded-full "
+              className="overflow-hidden rounded-full aspect-square"
+              
             />
           </Link>
         </Button>

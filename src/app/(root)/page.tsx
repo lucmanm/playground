@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import CustomButton from "@/app/(root)/_root-components/CustomButton";
 import { auth, signIn } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import { env } from "@/lib/env";
 
 const Dashboard = async () => {
   const session = await auth();
