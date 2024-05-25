@@ -28,8 +28,14 @@ export default async function Header() {
   const user = session?.user;
   return (
     <header className="sticky top-0 z-10  h-[57px] items-center gap-1  px-4 bg-slate-950 text-white flex justify-between">
-      <Link href="/">
-        <h1 className="text-xl font-semibold">Playground</h1>
+      <Link
+        href="/"
+        className="flex max-sm:flex-col max-sm:justify-between max-sm:items-start items-end justify-end gap-2"
+      >
+        <h1 className="max-sm:text-base text-xl font-semibold">Playground</h1>
+        <span className="text-xs capitalize max-sm:text-[9px] lg:pb-1">
+          Lucmanm, my personal Playground of coding. to gain more knowledge.
+        </span>
       </Link>
       {/* <Drawer>
         <DrawerTrigger asChild>
