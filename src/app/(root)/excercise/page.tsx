@@ -26,7 +26,7 @@ const Excercise = () => {
       title="Explore my Excercises"
       description="This all listed is my playground for testing a code to expore more knowledge"
     >
-      <section className="grid grid-cols-4 gap-4">
+      <section className="flex flex-col lg:grid lg:grid-cols-4 gap-4">
         {exerciseParams.map((data, index) => (
           <CardExcercise key={index} item={data} />
         ))}
