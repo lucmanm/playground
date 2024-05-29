@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 
@@ -38,24 +38,43 @@ const HyperPAy = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [checkoutId, setCheckoutId] = useState(null);
-
+  const [paymentStatus, setPaymentStatus] = useState(null);
   const handleClick = async () => {
     try {
       const fetchedData = await fetchData();
       setData(fetchedData);
       setCheckoutId(fetchedData.id);
+      localStorage.setItem("checkoutId", fetchedData.id);
     } catch (err: unknown) {
       setError(err.message);
     }
   };
 
+  const checkPaymentStatus = async () => {
+    if (checkoutId && !paymentStatus) {
+      const url = `https://eu-test.oppwa.com/${window.location.search.slice(1)}`; // Extract resourcePath from URL
+      const response = await fetch(url, {
+        headers: {
+          Authorization: "Bearer YOUR_AUTHORIZATION_TOKEN",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error fetching payment status: ${response.statusText}`);
+      }
+      const statusData = await response.json();
+      setPaymentStatus(statusData.status);
+      localStorage.removeItem("checkoutId"); // Remove checkoutId after successful status check
+    }
+  };
+
   useEffect(() => {
     if (checkoutId) {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = `https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${checkoutId}`;
       script.async = true;
       document.body.appendChild(script);
     }
+    checkPaymentStatus();
   }, [checkoutId]);
   return (
     <div>
@@ -64,7 +83,11 @@ const HyperPAy = () => {
       {data && (
         <>
           <p>Checkout ID: {checkoutId}</p>
-          <form action={data.shopperResultUrl} className="paymentWidgets" data-brands="VISA MASTER AMEX"></form>
+          <form
+            action={data.shopperResultUrl}
+            className="paymentWidgets"
+            data-brands="VISA MASTER AMEX"
+          ></form>
         </>
       )}
     </div>
