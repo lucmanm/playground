@@ -4,6 +4,7 @@ import UploadExcelFile from "./_pages/UploadExcelFile";
 import Container from "../_components/Container";
 import Cloudinary from "./_pages/cloudinary";
 import { CheckboxReactHookFormMultiple } from "./_pages/CheckboxReactHookFormMultiple";
+import HyperPay from "./_pages/hyper-pay";
 
 type TexcercisesProps = {
   params: { excercisetitle: string };
@@ -25,6 +26,7 @@ const Excercises: React.FC<TexcercisesProps> = ({ params }) => {
       {checkTitle.sPath === "CheckboxReactHookFormMultiple" && <CheckboxReactHookFormMultiple/>}
       {checkTitle.sPath === "upload-file" && <UploadExcelFile />}
       {checkTitle.sPath === "cloudinary" && <Cloudinary />}
+      {checkTitle.sPath === "hyper-pay" && <HyperPay />}
     </Container>
   );
 };

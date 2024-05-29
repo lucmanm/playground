@@ -17,6 +17,11 @@ export const exerciseParams = [
     title: "Cloudinary Testing",
     description: "I used a cloudinary to test create, read, update, delete of images",
   },
+  {
+    sPath: "hyper-pay",
+    title: "Hyper Pay",
+    description: "hyper pay integration excercise",
+  },
 ] as const;
 
 const Excercise = () => {
