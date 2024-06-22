@@ -51,19 +51,19 @@ export async function updateProject(data: z.infer<typeof defaultProjectSchema>) 
 
 
 // Create Nuld Project Query schema type remove
-export async function createBulkProject(excelData) {
-    try {
-        await prisma.project.createMany({
-            data: excelData.map(item => ({
-                name: item.name,
-                description: item.description
-            }))
-        })
-        revalidatePath("/")
-    } catch (error) {
-        console.log("ERROR_CREATE_RPOJECT", error);
-    }
-}
+// export async function createBulkProject(excelData) {
+//     try {
+//         await prisma.project.createMany({
+//             data: excelData.map(item => ({
+//                 name: item.name,
+//                 description: item.description
+//             }))
+//         })
+//         revalidatePath("/")
+//     } catch (error) {
+//         console.log("ERROR_CREATE_RPOJECT", error);
+//     }
+// }
 
 // export async function createBulkProject(excelData: z.infer<typeof projectSchema>[]) {
 //     try {
