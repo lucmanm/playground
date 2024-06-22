@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-import { exerciseParams } from "../page";
 import UploadExcelFile from "./_pages/UploadExcelFile";
 import Container from "../_components/Container";
 import Cloudinary from "./_pages/cloudinary";
 import { CheckboxReactHookFormMultiple } from "./_pages/CheckboxReactHookFormMultiple";
 import HyperPay from "./_pages/hyper-pay";
+import { exerciseParams } from "@/lib/constant";
 
 type TexcercisesProps = {
   params: { excercisetitle: string };
