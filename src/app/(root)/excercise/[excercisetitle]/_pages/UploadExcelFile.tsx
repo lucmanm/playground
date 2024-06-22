@@ -1,6 +1,6 @@
 "use client";
-import { createBulkProject } from "@/actions/project";
-import { projectSchema } from "@/app/(root)/[crudproduct]/add-edit-project-form";
+// import { createBulkProject } from "@/actions/project";
+// import { projectSchema } from "@/app/(root)/[crudproduct]/add-edit-project-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -56,11 +56,11 @@ const UploadExcelFile = () => {
           // Worksheet
           const workSheet = workbook.Sheets[sheetName];
           // Json
-          const json: z.infer<typeof projectSchema>[] =
+          // const json: z.infer<typeof projectSchema>[] =
           XLSX.utils.sheet_to_json(workSheet);
           try {
             //Save to the DB
-            await createBulkProject(json);
+            // await createBulkProject(json);
           } catch (error) {
             console.log(error);
           }
