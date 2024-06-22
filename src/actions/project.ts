@@ -2,12 +2,12 @@
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { defaultprojectSchema } from "@/type/validation";
+import { defaultProjectSchema } from "@/type/validation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 
-export async function createProject(data: z.infer<typeof defaultprojectSchema>) {
+export async function createProject(data: z.infer<typeof defaultProjectSchema>) {
     try {
         const session = await auth()
         const userId = session?.user.id
@@ -30,7 +30,7 @@ export async function createProject(data: z.infer<typeof defaultprojectSchema>) 
 
 
 // Update Project Query
-export async function updateProject(data: z.infer<typeof defaultprojectSchema>) {
+export async function updateProject(data: z.infer<typeof defaultProjectSchema>) {
     try {
         const { name, description } = data
 
@@ -120,4 +120,4 @@ export async function deleteProject(productId: string | undefined) {
         console.log("ERROR_DELETE_PROJECT", error);
 
     }
-} 
+}
