@@ -45,8 +45,9 @@ const HyperPAy = () => {
       setData(fetchedData);
       setCheckoutId(fetchedData.id);
       localStorage.setItem("checkoutId", fetchedData.id);
-    } catch (err: unknown) {
-      setError(err.message);
+    } catch (error) {
+      console.log(error);
+
     }
   };
 
@@ -76,6 +77,7 @@ const HyperPAy = () => {
     }
     checkPaymentStatus();
   }, [checkoutId]);
+
   return (
     <div>
       <Button onClick={handleClick}>Fetch Data</Button>
@@ -84,7 +86,7 @@ const HyperPAy = () => {
         <>
           <p>Checkout ID: {checkoutId}</p>
           <form
-            action={data.shopperResultUrl}
+            // action={data.shopperResultUrl} Disabled
             className="paymentWidgets"
             data-brands="VISA MASTER AMEX"
           ></form>
